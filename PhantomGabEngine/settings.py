@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+    'PGE',
 ]
 
 MIDDLEWARE = [
@@ -99,6 +100,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+
+ADMINS = [('Sricharan', 'sricharanprograms@gmail.com')]
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'sricharanprograms@gmail.com'
+EMAIL_HOST_PASSWORD = '9952886642'
+DEFAULT_FROM_EMAIL = 'sricharanprograms@gmail.com'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -107,6 +119,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+
+
 
 # Update database configuration with $DATABASE_URL.
 db_from_env = dj_database_url.config(conn_max_age=500)
