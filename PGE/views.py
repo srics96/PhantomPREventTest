@@ -40,9 +40,9 @@ def add_tasks(request):
             task_obj = Task(task_name=task, project=project_obj)
             task_obj.save()
 
-        task_names = Task.objects.filter(project=project_obj).task_name
-        for task in task_names:
-            print(task)
+        task_objs = Task.objects.filter(project=project_obj)
+        for task in task_objs:
+            print(task.task_name)
         
         response = {
             "message" : "successfull"
