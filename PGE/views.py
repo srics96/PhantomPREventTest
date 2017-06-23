@@ -40,7 +40,7 @@ def add_tasks(request):
             task_obj = Task(task_name=task, project=project_obj)
             task_obj.save()
 
-        task_names = Tasks.objects.filter(project=project_obj).task_name
+        task_names = Task.objects.filter(project=project_obj).task_name
         for task in task_names:
             print(task)
         
