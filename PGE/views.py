@@ -24,7 +24,8 @@ def add_tasks(request):
         recieved_json = json.loads(request.body)
         task_dict = byteify(recieved_json)
         for key, value in task_dict.items():
-            print(key, value)
+            print (key, value)
+        return HttpResponse("Successfully submitted task")
 
 @csrf_exempt
 def handle_message(request):
