@@ -18,19 +18,16 @@ def byteify(input):
         return input
 
 def add_tasks(request):
-	if request.method == 'POST':
-		recieved_json = json.loads(request.body)
-		task_dict = byteify(recieved_json)
-		for key, value in task_dict.items():
-			if key == TASK_ADDITION_KEY_TASKS:
-				print value
-			else:
-				print value
+    if request.method == 'POST':
+        recieved_json = json.loads(request.body)
+        task_dict = byteify(recieved_json)
+        for key, value in task_dict.items():
+            print(key, value)
 
 
 def handle_message(request):
-	if request.method == 'GET':
-		return HttpResponse(data)
+    if request.method == 'GET':
+        return HttpResponse(data)
 
 
 
