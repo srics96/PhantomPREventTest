@@ -1,7 +1,8 @@
-from django.shortcuts import render
 from django.http import HttpResponse
-
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+
+import json
 
 # Utility method to delete unicodes
 
@@ -25,8 +26,15 @@ def add_tasks(request):
         task_dict = byteify(recieved_json)
         for key, value in task_dict.items():
             print (key, value)
-        return HttpResponse("Successfully submitted task")
-
+        response = {
+            "message" : "successfull"
+        }
+        return HttpResponse(json.dumps(response), content_type="application/json")
+    else:
+        response = {
+            "message" : "Forbidden"
+        }
+        return HttpResponse(json.dumps(response), content_type="application/json")
 @csrf_exempt
 def handle_message(request):
     if request.method == 'GET':
