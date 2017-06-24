@@ -3,6 +3,8 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from PGE.models import Employee, Manager, Project, Role, Task
+
+import entry_addition
 import json
 
 # Utility method to delete unicodes
@@ -10,6 +12,7 @@ import json
 TASK_ADDITION_KEY_PROJECT_NAME = "project_name"
 TASK_ADDITION_KEY_TASKS = "tasks"
 TASK_ADDITION_MANAGER_EMAIL = "manager_email"
+TASK_ENTITY_NAME = "task"
 
 def byteify(input):
     if isinstance(input, dict):
@@ -26,7 +29,8 @@ def byteify(input):
 @csrf_exempt
 def add_tasks(request):
     if request.method == 'POST':
-        
+        entity_entries = []
+        entity_name = TASK_ENTITY_NAME
         recieved_json = json.loads(request.body)
         input_dict = byteify(recieved_json)
         manager_email = input_dict[TASK_ADDITION_MANAGER_EMAIL]
@@ -39,11 +43,9 @@ def add_tasks(request):
         for task in task_names:
             task_obj = Task(task_name=task, project=project_obj)
             task_obj.save()
-
-        task_objs = Task.objects.filter(project=project_obj)
-        for task in task_objs:
-            print(task.task_name)
-        
+            entity_entries.append(task_obj.task_name)
+            
+        entry_addition.add_entity(entity_name, entity_entries)
         response = {
             "message" : "successfull"
         }
