@@ -101,7 +101,7 @@ def handle_message(request):
     
     elif request.method == 'GET':
         response = send_query("Hi")
-        print(response)
+        print(response.read())
         return HttpResponse("Accessed api.ai")
 
         
