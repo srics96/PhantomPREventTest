@@ -38,7 +38,7 @@ def send_query(query):
     request.session_id = SESSION_ID
     request.query = query
     response = request.getresponse()
-    return response
+    return response.read()
 
 
 def byteify(input):
@@ -101,7 +101,8 @@ def handle_message(request):
     
     elif request.method == 'GET':
         response = send_query("Hi")
-        print(response.json())
+        response_json = json.dumps(response)
+        print(response_json)
         return HttpResponse("Accessed api.ai")
 
         
