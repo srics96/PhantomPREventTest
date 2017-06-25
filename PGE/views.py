@@ -5,7 +5,6 @@ from django.views.decorators.csrf import csrf_exempt
 from PGE.models import Employee, Manager, Project, Role, Task
 
 import json
-import nlp
 import os.path
 import sys
 import requests
