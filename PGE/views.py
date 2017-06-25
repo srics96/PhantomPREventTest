@@ -6,7 +6,20 @@ from PGE.models import Employee, Manager, Project, Role, Task
 
 import json
 import nlp
+import os.path
+import sys
 import requests
+
+try:
+    import apiai
+except ImportError:
+    sys.path.append(
+        os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)
+    )
+    import apiai
+
+CLIENT_ACCESS_TOKEN = '75d2f175cd05473fbddba4d6475a49d8'
+SESSION_ID = 1001
 
 # Utility method to delete unicodes
 
@@ -17,6 +30,17 @@ TASK_ENTITY_NAME = "Task"
 TASK_ENTITY_ADDITION_URL = "https://api.api.ai/v1/entities/{0}/entries?v=20150910".format(TASK_ENTITY_NAME)
 SUCCESS_STATUS_CODE = 200
 MESSAGE_REQUEST_KEY = "message"
+
+def send_query(query):
+    
+    ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
+    request = ai.text_request()
+    request.lang = 'en'  # optional, default value equal 'en'
+    request.session_id = SESSION_ID
+    request.query = query
+    response = request.getresponse()
+    return response
+
 
 def byteify(input):
     if isinstance(input, dict):
@@ -72,7 +96,7 @@ def handle_message(request):
         message = message.lstrip()
         message = message[8:]
         print(message)
-        response = nlp.send_query(message)
+        response = send_query(message)
         print(response)
         return HttpResponse(status=200)
 
