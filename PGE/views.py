@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from PGE.models import Employee, Manager, Project, Role, Task
 
 import json
+import nlp
 import requests
 
 # Utility method to delete unicodes
@@ -15,6 +16,7 @@ TASK_ADDITION_MANAGER_EMAIL = "manager_email"
 TASK_ENTITY_NAME = "Task"
 TASK_ENTITY_ADDITION_URL = "https://api.api.ai/v1/entities/{0}/entries?v=20150910".format(TASK_ENTITY_NAME)
 SUCCESS_STATUS_CODE = 200
+MESSAGE_REQUEST_KEY = "message"
 
 def byteify(input):
     if isinstance(input, dict):
@@ -63,8 +65,19 @@ def add_tasks(request):
 
 @csrf_exempt
 def handle_message(request):
-    if request.method == 'GET':
-        return HttpResponse(data)
+    if request.method == 'POST':
+        recieved_json = json.loads(request.body)
+        input_dict = byteify(recieved_json)
+        message = input_dict[MESSAGE_REQUEST_KEY]
+        message = message.lstrip()
+        message = message[8:]
+        print(message)
+        response = nlp.send_query(message)
+        print(response)
+        return HttpResponse(status=200)
+
+
+        
 
 
 
