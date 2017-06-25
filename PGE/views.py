@@ -4,7 +4,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 from PGE.models import Employee, Manager, Project, Role, Task
 
-import entry_addition
 import json
 
 # Utility method to delete unicodes
@@ -12,7 +11,9 @@ import json
 TASK_ADDITION_KEY_PROJECT_NAME = "project_name"
 TASK_ADDITION_KEY_TASKS = "tasks"
 TASK_ADDITION_MANAGER_EMAIL = "manager_email"
-TASK_ENTITY_NAME = "task"
+TASK_ENTITY_NAME = "Task"
+TASK_ENTITY_ADDITION_URL = "https://api.api.ai/v1/entities/{0}/entries?v=20150910".format(TASK_ENTITY_NAME)
+SUCCESS_STATUS_CODE = 200
 
 def byteify(input):
     if isinstance(input, dict):
@@ -29,6 +30,8 @@ def byteify(input):
 @csrf_exempt
 def add_tasks(request):
     if request.method == 'POST':
+        request_list = []
+        headers = {'Content-Type': 'application/json; charset=utf-8', 'Authorization': 'Bearer b55df5347afe4002a39e94cd61c121c9'}
         entity_entries = []
         entity_name = TASK_ENTITY_NAME
         recieved_json = json.loads(request.body)
@@ -43,18 +46,20 @@ def add_tasks(request):
         for task in task_names:
             task_obj = Task(task_name=task, project=project_obj)
             task_obj.save()
-            entity_entries.append(task_obj.task_name)
-            
-        entry_addition.add_entity(entity_name, entity_entries)
-        response = {
-            "message" : "successfull"
-        }
-        return HttpResponse(json.dumps(response), content_type="application/json")
+            task_name = task_obj.task_name
+            request_dict = {"value" : task_obj.task_name, "synonyms" : [task_name]}
+            request_list.append(request_dict)
+        request_list = json.dumps(request_list)
+        entity_request = requests.post(TASK_ENTITY_ADDITION_URL, data=request_list, headers=headers)
+        if entity_request.status_code == SUCCESS_STATUS_CODE:
+            print("Entity added successfully")
+            return HttpResponse(status=200)
+        else:
+            return HttpResponse(status=500)
     else:
-        response = {
-            "message" : "Forbidden"
-        }
-        return HttpResponse(json.dumps(response), content_type="application/json")
+        return HttpResponse(status=403)
+
+
 @csrf_exempt
 def handle_message(request):
     if request.method == 'GET':
