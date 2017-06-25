@@ -98,7 +98,11 @@ def handle_message(request):
         response = send_query(message)
         print(response)
         return HttpResponse(status=200)
-
+    
+    elif request.method == 'GET':
+        response = send_query("Hi")
+        print(response)
+        return HttpResponse("Accessed api.ai")
 
         
 
