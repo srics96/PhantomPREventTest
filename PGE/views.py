@@ -27,18 +27,10 @@ TASK_ADDITION_KEY_TASKS = "tasks"
 TASK_ADDITION_MANAGER_EMAIL = "manager_email"
 TASK_ENTITY_NAME = "Task"
 TASK_ENTITY_ADDITION_URL = "https://api.api.ai/v1/entities/{0}/entries?v=20150910".format(TASK_ENTITY_NAME)
+MESSAGE_SUBMISSION_URL = "https://api.api.ai/v1/query?v=20150910"
 SUCCESS_STATUS_CODE = 200
 MESSAGE_REQUEST_KEY = "message"
-
-def send_query(query):
-    
-    ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
-    request = ai.text_request()
-    request.lang = 'en'  # optional, default value equal 'en'
-    request.session_id = SESSION_ID
-    request.query = query
-    response = request.getresponse()
-    return response.read()
+headers = {'Content-Type': 'application/json; charset=utf-8', 'Authorization': 'Bearer b55df5347afe4002a39e94cd61c121c9'}
 
 
 def byteify(input):
@@ -57,7 +49,6 @@ def byteify(input):
 def add_tasks(request):
     if request.method == 'POST':
         request_list = []
-        headers = {'Content-Type': 'application/json; charset=utf-8', 'Authorization': 'Bearer b55df5347afe4002a39e94cd61c121c9'}
         entity_entries = []
         entity_name = TASK_ENTITY_NAME
         recieved_json = json.loads(request.body)
@@ -94,9 +85,11 @@ def handle_message(request):
         message = input_dict[MESSAGE_REQUEST_KEY]
         message = message.lstrip()
         message = message[8:]
-        print(message)
-        response = send_query(message)
-        print(response)
+        headers['Authorization'] = 'Bearer {0}'.format(CLIENT_ACCESS_TOKEN)
+        request_dict = {"query" : [message], "sessionId" : SESSION_ID, "lang" : "en" } 
+        request_dict = json.dumps(request_dict)
+        response = requests.post(MESSAGE_SUBMISSION_URL, data=request_dict, headers=headers)
+        print(response.json())
         return HttpResponse(status=200)
     
     elif request.method == 'GET':
