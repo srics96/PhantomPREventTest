@@ -32,6 +32,7 @@ MESSAGE_SUBMISSION_URL = "https://api.api.ai/v1/query?v=20150910"
 SUCCESS_STATUS_CODE = 200
 MESSAGE_REQUEST_KEY = "message"
 ACTION_INCOMPLETE = "actionIncomplete"
+RESULT_KEY = "result"
 headers = {'Content-Type': 'application/json; charset=utf-8', 'Authorization': 'Bearer b55df5347afe4002a39e94cd61c121c9'}
 
 
@@ -106,8 +107,9 @@ def handle_message(request):
         request_dict = json.dumps(request_dict)
         response = requests.post(MESSAGE_SUBMISSION_URL, data=request_dict, headers=headers)
         response_dict = byteify(response.json())
-        print(response_dict)
-        print(results_dict)
+        results_dict = response_dict[RESULT_KEY]
+        action_incomplete = results_dict[ACTION_INCOMPLETE]
+        print(action_incomplete)
     
     elif request.method == 'GET': 
         response = send_query("Hi")
