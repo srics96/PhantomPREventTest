@@ -10,11 +10,6 @@ import sys
 import requests
 
 
-from xml.dom.minidom import parseString
-import xmlrpclib
-import xml.etree.ElementTree as ET
-
-
 try:
     import apiai
 except ImportError:
