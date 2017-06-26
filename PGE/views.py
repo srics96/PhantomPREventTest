@@ -109,7 +109,7 @@ def handle_message(request):
         response_dict = byteify(response.json())
         results_dict = response_dict[RESULT_KEY]
         action_incomplete = results_dict[ACTION_INCOMPLETE]
-        if !action_incomplete:
+        if action_incomplete is False:
             pass
         
         fulfillment = response_dict['fulfillment']
