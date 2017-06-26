@@ -9,6 +9,12 @@ import os.path
 import sys
 import requests
 
+
+from xml.dom.minidom import parseString
+import xmlrpclib
+import xml.etree.ElementTree as ET
+
+
 try:
     import apiai
 except ImportError:
@@ -30,6 +36,7 @@ TASK_ENTITY_ADDITION_URL = "https://api.api.ai/v1/entities/{0}/entries?v=2015091
 MESSAGE_SUBMISSION_URL = "https://api.api.ai/v1/query?v=20150910"
 SUCCESS_STATUS_CODE = 200
 MESSAGE_REQUEST_KEY = "message"
+ACTION_INCOMPLETE = "actionIncomplete"
 headers = {'Content-Type': 'application/json; charset=utf-8', 'Authorization': 'Bearer b55df5347afe4002a39e94cd61c121c9'}
 
 
@@ -43,6 +50,20 @@ def byteify(input):
         return input.encode('utf-8')
     else:
         return input
+
+
+def call_api(session_id, query):
+    ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
+
+    request = ai.text_request()
+
+    request.session_id = session_id
+
+    request.query = query
+
+    response = request.getresponse()
+
+    return response.read()
 
 
 @csrf_exempt
@@ -89,8 +110,9 @@ def handle_message(request):
         request_dict = {"query" : [message], "sessionId" : SESSION_ID, "lang" : "en" } 
         request_dict = json.dumps(request_dict)
         response = requests.post(MESSAGE_SUBMISSION_URL, data=request_dict, headers=headers)
-        print(response.json())
-        return HttpResponse(status=200)
+        response_dict = byteify(response.json())
+        results_dict = response_dict[ACTION_INCOMPLETE]
+        print(results_dict)
     
     elif request.method == 'GET':
         response = send_query("Hi")
