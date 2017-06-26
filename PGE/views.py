@@ -109,12 +109,19 @@ def handle_message(request):
         response_dict = byteify(response.json())
         results_dict = response_dict[RESULT_KEY]
         action_incomplete = results_dict[ACTION_INCOMPLETE]
-        print(action_incomplete)
+        if !action_incomplete:
+            pass
+        
+        fulfillment = response_dict['fulfillment']
+        speech_response = response_dict['speech']
+        response = {
+            "speech_response" : speech_response
+        }
+        print(response)
+        return HttpResponse(json.dumps(response), content_type="application/json")
     
     elif request.method == 'GET': 
-        response = send_query("Hi")
-        response_dict = byteify(response)
-        return HttpResponse(response_dict)
+        return HttpResponse(status=403)
 
         
 
