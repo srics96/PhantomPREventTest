@@ -112,8 +112,8 @@ def handle_message(request):
         if action_incomplete is False:
             pass
         
-        fulfillment = response_dict['fulfillment']
-        speech_response = response_dict['speech']
+        fulfillment = results_dict['fulfillment']
+        speech_response = fulfillment['speech']
         response = {
             "speech_response" : speech_response
         }
