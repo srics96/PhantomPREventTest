@@ -106,10 +106,10 @@ def handle_message(request):
         request_dict = json.dumps(request_dict)
         response = requests.post(MESSAGE_SUBMISSION_URL, data=request_dict, headers=headers)
         response_dict = byteify(response.json())
-        results_dict = response_dict[ACTION_INCOMPLETE]
+        print(response_dict)
         print(results_dict)
     
-    elif request.method == 'GET':
+    elif request.method == 'GET': 
         response = send_query("Hi")
         response_dict = byteify(response)
         return HttpResponse(response_dict)
