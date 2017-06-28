@@ -102,6 +102,7 @@ def handle_message(request):
         message = input_dict[MESSAGE_REQUEST_KEY]
         message = message.lstrip()
         message = message[8:]
+        message = message.replace("@", "")
         headers['Authorization'] = 'Bearer {0}'.format(CLIENT_ACCESS_TOKEN)
         request_dict = {"query" : [message], "sessionId" : SESSION_ID, "lang" : "en" } 
         request_dict = json.dumps(request_dict)
@@ -117,7 +118,7 @@ def handle_message(request):
         response = {
             "speech_response" : speech_response
         }
-        print(response)
+        
         return HttpResponse(json.dumps(response), content_type="application/json")
     
     elif request.method == 'GET': 
