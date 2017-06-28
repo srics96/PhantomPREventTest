@@ -103,6 +103,7 @@ def handle_message(request):
         message = message.lstrip()
         message = message[8:]
         message = message.replace("@", "")
+        print(message)
         headers['Authorization'] = 'Bearer {0}'.format(CLIENT_ACCESS_TOKEN)
         request_dict = {"query" : [message], "sessionId" : SESSION_ID, "lang" : "en" } 
         request_dict = json.dumps(request_dict)
