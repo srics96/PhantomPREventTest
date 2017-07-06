@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import os.path
 import sys
 
@@ -11,30 +14,24 @@ except ImportError:
 
 import uuid
 
-CLIENT_ACCESS_TOKEN = "75d2f175cd05473fbddba4d6475a49d8"
+CLIENT_ACCESS_TOKEN = "b55df5347afe4002a39e94cd61c121c9"
 
 
-def add_entity(entity_name, input_entries):
+def main():
     ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
 
-    # some unique session id for user identification
+    # some unuque session id for user identification
     session_id = uuid.uuid4().hex
-    entries = []
 
-    for entry in input_entries:
-        entries.append(api.ai.UserEntityEntry(entry, [entry]))
-    
-    '''
     entries = [
         apiai.UserEntityEntry('Firefox', ['Firefox']),
         apiai.UserEntityEntry('XCode', ['XCode']),
         apiai.UserEntityEntry('Sublime Text', ['Sublime Text'])
     ]
-    '''
 
     user_entities_request = ai.user_entities_request(
         [
-            apiai.UserEntity(entity_name, entries, session_id)
+            apiai.UserEntity("Application", entries, session_id)
         ]
     )
 
@@ -42,7 +39,15 @@ def add_entity(entity_name, input_entries):
 
     print 'Upload user entities response: ', (user_entities_response.read())
 
-    
+    request = ai.text_request()
+
+    request.session_id = session_id
+    request.query = "Open application Firefox"
+
+    response = request.getresponse()
+
+    print 'Query response: ', (response.read())
 
 
-
+if __name__ == '__main__':
+    main()

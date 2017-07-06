@@ -21,17 +21,21 @@ class Role(models.Model):
         (DESIGNER, "Designer"),
     )
 
-    role_name = models.CharField(choices=ROLE_CHOICES, max_length=3, default=ANDROID_DEVELOPER  , unique=True)
-
+    role_name = models.CharField(choices=ROLE_CHOICES, max_length=3, default=ANDROID_DEVELOPER, unique=True)
+    
     def __str__(self):
         return self.role_name
+
+
+class Priority(models.Model):
+    role = models.ForeignKey(Role, on_delete=models.CASCADE)
+    magnitude = models.IntegerField()
 
 
 class Employee(models.Model):
     name = models.CharField(max_length=20, default=None)
     email = models.EmailField(max_length=30, unique=True)
-    roles = models.ManyToManyField(Role)
-
+    priority = models.ManyToManyField(Priority)
     
     def __str__(self):
         return self.name
@@ -52,7 +56,7 @@ class Project(models.Model):
         return self.project_name
 
 
-class Task(models.Model):
+class Task(models.Model):   
     task_name = models.CharField(max_length=100, default=None)
     start_date = models.DateField(default=datetime.now().date())
     deadline = models.DateField(default=datetime.now().date() + timedelta(days=30))

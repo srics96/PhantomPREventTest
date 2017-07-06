@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 import dj_database_url
+import pyrebase
+
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,6 +28,7 @@ SECRET_KEY = "tezn59uelxx-**3$qfm&(k!(g$u^4e8b0tu#56+-(yhq@pwd^p"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
 
 # Application definition
 
@@ -100,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+# Firebase configuration
 
 ADMINS = [('Sricharan', 'sricharanprograms@gmail.com')]
 

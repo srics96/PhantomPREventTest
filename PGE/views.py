@@ -4,7 +4,13 @@ from django.views.decorators.csrf import csrf_exempt
 
 from PGE.models import Employee, Manager, Project, Role, Task
 
+from datetime import datetime, timedelta
+from firebase import firebase
+
+from dateutil import parser
+
 import json
+import pyrebase
 import os.path
 import sys
 import requests
@@ -21,6 +27,20 @@ except ImportError:
 CLIENT_ACCESS_TOKEN = '75d2f175cd05473fbddba4d6475a49d8'
 SESSION_ID = 1001
 
+
+config = {
+  "apiKey": "AIzaSyB4555K4PmN7z5oMFIIfu08HSV_NRReSZQ",
+  "authDomain": "phantom-gab-engine.firebaseapp.com",
+  "databaseURL": "https://phantom-gab-engine.firebaseio.com",
+  "storageBucket": "phantom-gab-engine.appspot.com",
+  "serviceAccount": "phantom-gab-engine-firebase-adminsdk-o9tcv-6faea27d58.json"
+}
+
+firebase = pyrebase.initialize_app(config)
+auth = firebase.auth()
+user = auth.sign_in_with_email_and_password("sriablaze@gmail.com", "1234sri#")
+db = firebase.database()
+
 # Utility method to delete unicodes
 
 TASK_ADDITION_KEY_PROJECT_NAME = "project_name"
@@ -33,6 +53,8 @@ SUCCESS_STATUS_CODE = 200
 MESSAGE_REQUEST_KEY = "message"
 ACTION_INCOMPLETE = "actionIncomplete"
 RESULT_KEY = "result"
+DATE_DEADLINE_KEY = "date_deadline"
+DURATION_DEADLINE_KEY = "duration_deadline"
 headers = {'Content-Type': 'application/json; charset=utf-8', 'Authorization': 'Bearer b55df5347afe4002a39e94cd61c121c9'}
 
 
@@ -112,9 +134,21 @@ def handle_message(request):
         results_dict = response_dict[RESULT_KEY]
         action_incomplete = results_dict[ACTION_INCOMPLETE]
         if action_incomplete is False:
-            pass
-        
-        fulfillment = results_dict['fulfillment']
+            result_parameters = results_dict["parameters"]
+            employees = result_parameters["employee"]
+            task = result_parameters["task"]
+            deadline_dict = result_parameters["deadline"]
+            date_duration = deadline_dict.get(DATE_DEADLINE_KEY, None)
+            duration_deadline = deadline_dict.get(DURATION_DEADLINE_KEY, None)
+            if duration_deadline is not None:
+                amount = duration_deadline["amount"]
+                unit = duration_deadline["unit"]
+                if unit == "day":
+                    deadline = datetime.date().now() + timedelta(days=int(amount))
+            else:
+                deadline = parser.parse(date_duration)
+
+        fulfillment = results_dict['fulfillment']   
         speech_response = fulfillment['speech']
         response = {
             "speech_response" : speech_response
@@ -124,6 +158,16 @@ def handle_message(request):
     
     elif request.method == 'GET': 
         return HttpResponse(status=403)
+
+def add_employee(request):
+
+    db.child("employees").push(employee, user['idToken'])
+
+
+    
+        
+
+
 
         
 
