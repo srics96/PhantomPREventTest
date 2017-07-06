@@ -5,6 +5,5 @@ psycopg2==2.6.2
 whitenoise==3.2
 requests
 apiai
-xmlrpclib
 dateutil
 Pyrebase
