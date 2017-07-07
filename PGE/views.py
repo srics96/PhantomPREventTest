@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from PGE.models import Employee, Manager, Project, Role, Task
 
 from datetime import datetime, timedelta
-from firebase import firebase
+
 
 from dateutil import parser
 
@@ -33,7 +33,7 @@ config = {
   "authDomain": "phantom-gab-engine.firebaseapp.com",
   "databaseURL": "https://phantom-gab-engine.firebaseio.com",
   "storageBucket": "phantom-gab-engine.appspot.com",
-  "serviceAccount": "phantom-gab-engine-firebase-adminsdk-o9tcv-6faea27d58.json"
+  "serviceAccount": "/Users/sriablaze/Documents/nameless-meadow-44269/PGE/phantom-gab-engine-firebase-adminsdk-o9tcv-6faea27d58.json"
 }
 
 firebase = pyrebase.initialize_app(config)
@@ -160,8 +160,9 @@ def handle_message(request):
         return HttpResponse(status=403)
 
 def add_employee(request):
-    employee 
-    db.child("employees").push(employee, user['idToken'])
+    employee = Employee.objects.get(email="skandyruban@gmail.com")
+    input_dict = {"name": employee.name, "email": employee.email}
+    db.child("employees").push(input_dict, user['idToken'])
 
 
     
