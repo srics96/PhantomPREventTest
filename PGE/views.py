@@ -33,7 +33,7 @@ config = {
   "authDomain": "phantom-gab-engine.firebaseapp.com",
   "databaseURL": "https://phantom-gab-engine.firebaseio.com",
   "storageBucket": "phantom-gab-engine.appspot.com",
-  "serviceAccount": "/Users/sriablaze/Documents/nameless-meadow-44269/PGE/phantom-gab-engine-firebase-adminsdk-o9tcv-6faea27d58.json"
+  "serviceAccount": "PGE/phantom-gab-engine-firebase-adminsdk-o9tcv-6faea27d58.json"
 }
 
 firebase = pyrebase.initialize_app(config)
