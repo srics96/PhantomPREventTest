@@ -1,8 +1,10 @@
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from PGE.models import Employee, Manager, Priority, Project, Role, Task
+from PGE.serializers import EmployeeSerializer
 
 from datetime import datetime, timedelta
 
@@ -161,6 +163,16 @@ def handle_message(request):
     
     elif request.method == 'GET': 
         return HttpResponse(status=403)
+
+
+@csrf_exempt
+def get_employees(request, role='WFD'):
+    if request.method == 'GET':
+        print(role)
+        queryset = Employee.objects.filter(priority__role__role_name=role).order_by('priority__magnitude', 'name')
+        employee_serializer = EmployeeSerializer(queryset, many=True)
+        print(employee_serializer.data)
+        return JsonResponse(employee_serializer.data, status=201, safe=False)
 
 
 @csrf_exempt
