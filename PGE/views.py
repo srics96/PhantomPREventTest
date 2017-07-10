@@ -162,11 +162,20 @@ def handle_message(request):
     elif request.method == 'GET': 
         return HttpResponse(status=403)
 
+
+@csrf_exempt
+def get_employees(request):
+
+@csrf_exempt
 def add_employee(request):
+
+    if request.method == 'POST':
+        return HttpResponse("Hi")
+    '''
     employee = Employee.objects.get(email="skandyruban@gmail.com")
     input_dict = {"name": "Rithwin Siva", "email": "rithwinsiva@gmail.com"}
     db.child("employees").push(input_dict, user['idToken'])
-
+    '''
 
     
         
