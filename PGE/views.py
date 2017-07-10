@@ -166,7 +166,8 @@ def handle_message(request):
 @csrf_exempt
 def add_employee(request):
     if request.method == 'POST':
-        return HttpResponse("Hi")
+        data = json.loads(request.body)
+        print(data)
     '''
     employee = Employee.objects.get(email="skandyruban@gmail.com")
     input_dict = {"name": "Rithwin Siva", "email": "rithwinsiva@gmail.com"}
