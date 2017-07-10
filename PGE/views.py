@@ -164,11 +164,7 @@ def handle_message(request):
 
 
 @csrf_exempt
-def get_employees(request):
-
-@csrf_exempt
 def add_employee(request):
-
     if request.method == 'POST':
         return HttpResponse("Hi")
     '''
