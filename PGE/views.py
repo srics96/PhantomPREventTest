@@ -179,8 +179,9 @@ def add_employee(request):
             if role is not None:
                 role_obj = Role.objects.get(role_name=role)
                 priority_obj = Priority.objects.get(role=role_obj, magnitude=index + 1)
-                employee_obj = Employee(name=name, email=email, priority=priority_obj)
+                employee_obj = Employee(name=name, email=email)
                 employee_obj.save()
+                employee_obj.priority.add(priority_obj)
         return HttpResponse(status=200)
 
 
