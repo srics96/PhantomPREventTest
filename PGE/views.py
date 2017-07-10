@@ -166,13 +166,9 @@ def handle_message(request):
 @csrf_exempt
 def add_employee(request):
     if request.method == 'POST':
-        name = request.POST["name"]
-        email = request.POST["email"]
-        role1 = request.POST["1"]
-        role2 = request.POST.get("2", None)
-        role3 = request.POST.get("3", None)
-        print(name)
-        return HttpResponse("Hi")
+        recieved_json = json.loads(request.body)
+        recieved_dict = byteify(recieved_json)
+        print recieved_dict
     '''
     employee = Employee.objects.get(email="skandyruban@gmail.com")
     input_dict = {"name": "Rithwin Siva", "email": "rithwinsiva@gmail.com"}
