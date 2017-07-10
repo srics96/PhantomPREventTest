@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from PGE.models import Employee, Manager, Project, Role, Task
+from PGE.models import Employee, Manager, Priority, Project, Role, Task
 
 from datetime import datetime, timedelta
 
@@ -166,9 +166,28 @@ def handle_message(request):
 @csrf_exempt
 def add_employee(request):
     if request.method == 'POST':
+        roles = []
+        role_keys = ["1", "2", "3"]
         recieved_json = json.loads(request.body)
         recieved_dict = byteify(recieved_json)
-        print (recieved_dict)
+        name = recieved_dict["name"]
+        email = recieved_dict["email"]
+        for priorities in role_keys:
+            roles.append(recieved_dict.get(priorities, None))
+        print(roles)
+        for (index, role) in enumerate(roles):
+            if role is not None:
+                role_obj = Role.objects.get(role_name=role)
+                priority_obj = Priority.objects.get(role=role_obj, magnitude=index + 1)
+                employee_obj = Employee(name=name, email=email, priority=priority_obj)
+                employee_obj.save()
+        return HttpResponse(status=200)
+
+
+                
+
+
+
     '''
     employee = Employee.objects.get(email="skandyruban@gmail.com")
     input_dict = {"name": "Rithwin Siva", "email": "rithwinsiva@gmail.com"}
