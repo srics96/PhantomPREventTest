@@ -168,7 +168,7 @@ def add_employee(request):
     if request.method == 'POST':
         recieved_json = json.loads(request.body)
         recieved_dict = byteify(recieved_json)
-        print recieved_dict
+        print (recieved_dict)
     '''
     employee = Employee.objects.get(email="skandyruban@gmail.com")
     input_dict = {"name": "Rithwin Siva", "email": "rithwinsiva@gmail.com"}
