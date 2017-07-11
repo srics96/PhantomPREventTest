@@ -89,6 +89,9 @@ def call_api(session_id, query):
 @csrf_exempt
 def add_tasks(request):
     if request.method == 'POST':
+        recieved_json = json.loads(request.body)
+        print recieved_json
+        '''
         request_list = []
         entity_entries = []
         entity_name = TASK_ENTITY_NAME
@@ -114,6 +117,7 @@ def add_tasks(request):
             return HttpResponse(status=200)
         else:
             return HttpResponse(status=500)
+        '''
     else:
         return HttpResponse(status=403)
 
