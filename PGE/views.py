@@ -90,7 +90,7 @@ def call_api(session_id, query):
 def add_tasks(request):
     if request.method == 'POST':
         recieved_json = json.loads(request.body)
-        print recieved_json
+        print (recieved_json)
         '''
         request_list = []
         entity_entries = []
