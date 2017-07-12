@@ -125,6 +125,8 @@ def add_tasks(request):
             task_name = task['task_name']
             task_obj = Task(task_name=task_name, project=project_obj)
             task_obj.save()
+            print("All the tasks")
+            print(Task.objects.all())
             print(task_obj.task_name)
             request_dict = {"value" : task_obj.task_name, "synonyms" : [task_name]}
             request_list.append(request_dict)
