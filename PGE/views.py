@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from PGE.models import Employee, Manager, Priority, Project, Role, Task
+from PGE.models import Employee, Manager, Priority, Project, Role, Selection, Task
 from PGE.serializers import EmployeeSerializer
 
 from datetime import datetime, timedelta
