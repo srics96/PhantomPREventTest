@@ -122,10 +122,10 @@ def add_tasks(request):
         
         
         for task in tasks:
-            task_obj = Task(task_name=task, project=project_obj)
+            task_name = task['task_name']
+            task_obj = Task(task_name=task_name, project=project_obj)
             task_obj.save()
-            task_name = task_obj.task_name
-            print(task_name)
+            print(task_obj.task_name)
             request_dict = {"value" : task_obj.task_name, "synonyms" : [task_name]}
             request_list.append(request_dict)
         request_list = json.dumps(request_list)
