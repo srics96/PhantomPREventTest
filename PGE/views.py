@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from PGE.models import Employee, Manager, Priority, Project, Role, Task
+from PGE.models import Employee, Manager, Priority, Project, Role, Selection, Task
 from PGE.serializers import EmployeeSerializer
 
 from datetime import datetime, timedelta
@@ -89,29 +89,31 @@ def call_api(session_id, query):
 @csrf_exempt
 def add_tasks(request):
     if request.method == 'POST':
-        recieved_json = json.loads(request.body)
-        recieved_dict = byteify(recieved_json)
-        for element in recieved_dict:
-            if element == 'employees':
-                for role_emp_object in recieved_dict[element]:
-                    for (key, value) in role_emp_object.items():
-                        if key == 'role_name':
-                            role_name = value
-                            print(role_name)
-                        else:
-                            email = value['email']
-                            print(email)
-            
         channel_name = recieved_dict['channel_name']
         print(channel_name)
         for task_obj in recieved_dict['tasks']:
             print(task_obj['task_name'])
+        employee_list = []
+        recieved_json = json.loads(request.body)
+        recieved_dict = byteify(recieved_json)
+        for role_emp_object in recieved_dict["employees"]:
+            print(role_emp_object)
+            '''
+            for the_dict in role_emp_object.items():
+                       role_name = the_dict['role_name']
+                       employee_email = the_dict['employee']['email']
+                       role_obj = Role.objects.get(role_name=role_name)
+                       employee = Employee.objects.get(email=email)
+                       selection_obj, created = Selection.objects.get_or_create(role=role_obj)
+                       selection_obj.employees.add(employee)
+            
+        
 
 
         return HttpResponse(status=200)
         '''
         request_list = []
-        entity_entries = []
+        entity_entries = [] 
         entity_name = TASK_ENTITY_NAME
         recieved_json = json.loads(request.body)
         input_dict = byteify(recieved_json)
