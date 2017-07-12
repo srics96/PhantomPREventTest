@@ -102,10 +102,10 @@ def add_tasks(request):
                             email = value['email']
                             print(email)
             
-            channel_name = recieved_dict['channel_name']
-            print(channel_name)
-            for task_obj in recieved_dict['tasks']:
-                print(task_obj)
+        channel_name = recieved_dict['channel_name']
+        print(channel_name)
+        for task_obj in recieved_dict['tasks']:
+            print(task_obj['task_name'])
 
 
         return HttpResponse(status=200)
