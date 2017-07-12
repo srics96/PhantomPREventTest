@@ -112,6 +112,7 @@ def add_tasks(request):
 
         return HttpResponse(status=200)
         '''
+        '''
         request_list = []
         entity_entries = [] 
         entity_name = TASK_ENTITY_NAME
