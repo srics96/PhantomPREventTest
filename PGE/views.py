@@ -164,8 +164,7 @@ def add_tasks(request):
         
         for task in tasks:
             task_name = task['task_name']
-            task_obj = Task(task_name=task_name, project=project_obj)
-            task_obj.save()
+            task_obj, created = Task.objects.get_or_create(task_name=task_name, project=project_obj)
             print("All the tasks")
             print(Task.objects.all())
             print(task_obj.task_name)
