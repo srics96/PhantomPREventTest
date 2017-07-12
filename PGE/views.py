@@ -91,7 +91,17 @@ def add_tasks(request):
     if request.method == 'POST':
         recieved_json = json.loads(request.body)
         recieved_dict = byteify(recieved_json)
-        print(recieved_json)
+        for element in recieved_dict:
+            if element = 'employees':
+                for role_emp_object in recieved_dict[element]:
+                    for (key, value) in role_emp_object.items():
+                        if key == 'role_name':
+                            role_name = value
+                            print(role_name)
+                        else:
+                            email = value['email']
+                            print(email)
+        return HttpResponse(status=200)
         '''
         request_list = []
         entity_entries = []
