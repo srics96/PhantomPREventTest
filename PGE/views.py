@@ -101,18 +101,18 @@ def add_tasks(request):
             employee_email = role_emp_object['employee']['email']
             print(role_name)
             print(employee_email)
-                       ''' 
-                       role_obj = Role.objects.get(role_name=role_name)
-                       employee = Employee.objects.get(email=email)
-                       selection_obj, created = Selection.objects.get_or_create(role=role_obj)
-                       selection_obj.employees.add(employee)
-                       '''
+            '''
+            role_obj = Role.objects.get(role_name=role_name)
+            employee = Employee.objects.get(email=email)
+            selection_obj, created = Selection.objects.get_or_create(role=role_obj)
+            selection_obj.employees.add(employee)
+            '''    
             
         
 
 
         return HttpResponse(status=200)
-        '''
+        
         '''
         request_list = []
         entity_entries = [] 
