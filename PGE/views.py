@@ -94,7 +94,7 @@ def create_event(deadline, summary, description):
         'summary': summary,
         'description': description,
         'start': {'dateTime': start_datetime.isoformat()},
-        'end': {'dateTime': deadline},
+        'end': {'dateTime': deadline.isoformat()},
     }).execute()
 
     print(event)
