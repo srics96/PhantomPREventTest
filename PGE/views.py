@@ -144,6 +144,7 @@ def add_tasks(request):
 @csrf_exempt
 def handle_message(request):
     if request.method == 'POST':
+        print(Task.objects.all())
         recieved_json = json.loads(request.body)
         input_dict = byteify(recieved_json)
         message = input_dict[MESSAGE_REQUEST_KEY]
