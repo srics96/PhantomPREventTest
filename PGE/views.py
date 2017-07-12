@@ -223,7 +223,8 @@ def handle_message(request):
                 deadline = parser.parse(date_duration)
             summary = task_name
             description = "Task Deadline"
-            datetime_obj = datetime.combine(deadline, datetime.time(10, 0))
+            default_time = datetime.now(tz=tz).time()
+            datetime_obj = datetime.combine(deadline, default_time)
             create_event(datetime_obj, summary, description)
             task_obj.deadline = deadline
             task_obj.save()
