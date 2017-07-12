@@ -101,13 +101,12 @@ def add_tasks(request):
                         else:
                             email = value['email']
                             print(email)
-            if element == 'channel_name':
-                channel_name = recieved_dict[element]
-                print(channel_name)
-            else:
-                for task_obj in recieved_dict[element]:
-                    task_name = task_obj['task_name']
-                    print(task_name)
+            
+            channel_name = recieved_dict['channel_name']
+            print(channel_name)
+            for task_obj in recieved_dict['tasks']:
+                print(task_obj)
+
 
         return HttpResponse(status=200)
         '''
