@@ -98,7 +98,6 @@ def add_tasks(request):
         
 
         employee_obj = Employee.objects.get(email=manager_email)
-        Manager.objects.all().delete()
         manager_obj, created = Manager.objects.get_or_create(employee_instance=employee_obj)
         project_obj = Project(project_name=channel_name, manager=manager_obj)
         project_obj.save()
@@ -126,10 +125,12 @@ def add_tasks(request):
             task_obj = Task(task_name=task, project=project_obj)
             task_obj.save()
             task_name = task_obj.task_name
+            print(task_name)
             request_dict = {"value" : task_obj.task_name, "synonyms" : [task_name]}
             request_list.append(request_dict)
         request_list = json.dumps(request_list)
         entity_request = requests.post(TASK_ENTITY_ADDITION_URL, data=request_list, headers=headers)
+        print(entity_request.json())
         if entity_request.status_code == SUCCESS_STATUS_CODE:
             print("Entity added successfully")
             return HttpResponse(status=200)
