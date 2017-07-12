@@ -161,9 +161,13 @@ def handle_message(request):
         if action_incomplete is False:
             result_parameters = results_dict["parameters"]
             employees = result_parameters["employee"]
-            print (employees)
-            task = result_parameters["task"]
-            print (task)
+            print(employees)
+            task_name = result_parameters["task"]
+            print(task_name)
+            task_obj = Task.objects.get(task_name=task_name)
+            for employee_name in employees:
+                employee_obj = Employee.objects.get(name=employee_name)
+                task_obj.employees.add(employee_obj)
             deadline_dict = result_parameters["deadline"]
             date_duration = deadline_dict.get(DATE_DEADLINE_KEY, None)
             duration_deadline = deadline_dict.get(DURATION_DEADLINE_KEY, None)
@@ -174,7 +178,9 @@ def handle_message(request):
                     deadline = datetime.date().now() + timedelta(days=int(amount))
             else:
                 deadline = parser.parse(date_duration)
+
             print(deadline)
+            task_obj.deadline = deadline
 
         fulfillment = results_dict['fulfillment']   
         speech_response = fulfillment['speech']
