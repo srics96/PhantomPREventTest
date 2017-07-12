@@ -224,7 +224,8 @@ def handle_message(request):
                 deadline = parser.parse(date_duration)
             summary = task_name
             description = "Task Deadline"
-            create_event(deadline, summary, description)
+            datetime_obj = datetime.combine(deadline, datetime.time(10, 0))
+            create_event(datetime_obj, summary, description)
             task_obj.deadline = deadline
             task_obj.save()
         fulfillment = results_dict['fulfillment']   
