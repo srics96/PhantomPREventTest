@@ -89,44 +89,39 @@ def call_api(session_id, query):
 @csrf_exempt
 def add_tasks(request):
     if request.method == 'POST':
-        employee_list = []
+        selection_dict = {}
+        tasks = []
         recieved_json = json.loads(request.body)
         recieved_dict = byteify(recieved_json)
         channel_name = recieved_dict['channel_name']
-        print(channel_name)
+        manager_email = recieved_json['manager_email']
+        
+
+        employee_obj = Employee.objects.get(email=manager_email)
+        manager_obj, created = Manager.objects.get_or_create(employee_instance=employee_obj)
+        project_obj = Project(project_name=channel_name, manager=manager_obj)
+        project_obj.save()
         for task_obj in recieved_dict['tasks']:
-            print(task_obj['task_name'])
+            tasks.append(task_obj)
         for role_emp_object in recieved_dict["employees"]:
             role_name = role_emp_object['role_name']
             employee_email = role_emp_object['employee']['email']
-            print(role_name)
-            print(employee_email)
-            '''
             role_obj = Role.objects.get(role_name=role_name)
             employee = Employee.objects.get(email=email)
             selection_obj, created = Selection.objects.get_or_create(role=role_obj)
             selection_obj.employees.add(employee)
-            '''    
-            
-        
+            selection_dict[role_name] = selection_obj
 
+        print(selection_dict)
+        for role, selection_obj in selection_dict.items():
+            project_obj.selections.add(selection_obj)
 
-        return HttpResponse(status=200)
-        
-        '''
         request_list = []
         entity_entries = [] 
         entity_name = TASK_ENTITY_NAME
-        recieved_json = json.loads(request.body)
-        input_dict = byteify(recieved_json)
-        manager_email = input_dict[TASK_ADDITION_MANAGER_EMAIL]
-        employee_obj = Employee.objects.get(email=manager_email)
-        manager_obj, created = Manager.objects.get_or_create(employee_instance=employee_obj)
-        project_name = input_dict[TASK_ADDITION_KEY_PROJECT_NAME]
-        project_obj = Project(project_name=project_name, manager=manager_obj)
-        project_obj.save()
-        task_names = input_dict[TASK_ADDITION_KEY_TASKS]
-        for task in task_names:
+        
+        
+        for task in tasks:
             task_obj = Task(task_name=task, project=project_obj)
             task_obj.save()
             task_name = task_obj.task_name
@@ -139,7 +134,7 @@ def add_tasks(request):
             return HttpResponse(status=200)
         else:
             return HttpResponse(status=500)
-        '''
+        
     else:
         return HttpResponse(status=403)
 
