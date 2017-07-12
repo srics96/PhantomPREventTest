@@ -178,7 +178,7 @@ def handle_message(request):
                 amount = duration_deadline["amount"]
                 unit = duration_deadline["unit"]
                 if unit == "day":
-                    deadline = datetime.date().now() + timedelta(days=int(amount))
+                    deadline = datetime.now().date() + timedelta(days=int(amount))
             else:
                 deadline = parser.parse(date_duration)
 
