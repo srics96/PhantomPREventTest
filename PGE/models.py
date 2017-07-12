@@ -54,7 +54,7 @@ class Project(models.Model):
     project_name = models.CharField(max_length=100, default=None)
     start_date = models.DateField(default=datetime.now().date())
     end_date = models.DateField(default=None, null=True)
-    manager = models.OneToOneField(Manager)
+    manager = models.ForeignKey(Manager)
     employees = models.ManyToManyField(Employee)
     selections = models.ManyToManyField(Selection)
     
