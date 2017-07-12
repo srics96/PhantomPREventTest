@@ -11,6 +11,10 @@ from datetime import datetime, timedelta
 
 from dateutil import parser
 
+from apiclient.discovery import build
+from oauth2client.service_account import ServiceAccountCredentials
+
+import httplib2
 import json
 import pyrebase
 import os.path
@@ -28,6 +32,14 @@ except ImportError:
 
 CLIENT_ACCESS_TOKEN = '75d2f175cd05473fbddba4d6475a49d8'
 SESSION_ID = 1001
+
+service_account_email = 'calendar@phantom-gab-engine.iam.gserviceaccount.com'
+
+CLIENT_SECRET_FILE = 'PGE/calendar_service_account.json'
+
+SCOPES = 'https://www.googleapis.com/auth/calendar'
+scopes = [SCOPES]
+tz = pytz.timezone('Asia/Calcutta')
 
 
 config = {
@@ -58,6 +70,34 @@ RESULT_KEY = "result"
 DATE_DEADLINE_KEY = "date_deadline"
 DURATION_DEADLINE_KEY = "duration_deadline"
 headers = {'Content-Type': 'application/json; charset=utf-8', 'Authorization': 'Bearer b55df5347afe4002a39e94cd61c121c9'}
+
+
+def build_service():
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(
+        filename=CLIENT_SECRET_FILE,
+        scopes=SCOPES
+    )
+
+    http = credentials.authorize(httplib2.Http())
+
+    service = build('calendar', 'v3', http=http)
+
+    return service
+
+
+def create_event(deadline, summary, description):
+    service = build_service()
+    
+    start_datetime = datetime.datetime.now(tz=tz)
+    event = service.events().insert(calendarId='sricharanprograms@gmail.com', body={
+        'summary': summary,
+        'description': description,
+        'start': {'dateTime': start_datetime.isoformat()},
+        'end': {'dateTime': deadline},
+    }).execute()
+
+    print(event)
+
 
 
 def byteify(input):
@@ -181,10 +221,11 @@ def handle_message(request):
                     deadline = datetime.now().date() + timedelta(days=int(amount))
             else:
                 deadline = parser.parse(date_duration)
-
-            print(deadline)
+            summary = task_name
+            description = "Task Deadline"
+            create_event(deadline, summary, description)
             task_obj.deadline = deadline
-
+            task_obj.save()
         fulfillment = results_dict['fulfillment']   
         speech_response = fulfillment['speech']
         response = {
@@ -227,6 +268,8 @@ def add_employee(request):
                 employee_obj.save()
                 employee_obj.priority.add(priority_obj)
         return HttpResponse(status=200)
+
+
 
 
                 
