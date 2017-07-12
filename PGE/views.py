@@ -97,15 +97,16 @@ def add_tasks(request):
         for task_obj in recieved_dict['tasks']:
             print(task_obj['task_name'])
         for role_emp_object in recieved_dict["employees"]:
-            print(role_emp_object)
-            '''
-            for the_dict in role_emp_object.items():
-                       role_name = the_dict['role_name']
-                       employee_email = the_dict['employee']['email']
+            role_name = role_emp_object['role_name']
+            employee_email = role_emp_object['employee']['email']
+            print(role_name)
+            print(employee_email)
+                       ''' 
                        role_obj = Role.objects.get(role_name=role_name)
                        employee = Employee.objects.get(email=email)
                        selection_obj, created = Selection.objects.get_or_create(role=role_obj)
                        selection_obj.employees.add(employee)
+                       '''
             
         
 
