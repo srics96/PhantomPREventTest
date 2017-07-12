@@ -89,13 +89,13 @@ def call_api(session_id, query):
 @csrf_exempt
 def add_tasks(request):
     if request.method == 'POST':
+        employee_list = []
+        recieved_json = json.loads(request.body)
+        recieved_dict = byteify(recieved_json)
         channel_name = recieved_dict['channel_name']
         print(channel_name)
         for task_obj in recieved_dict['tasks']:
             print(task_obj['task_name'])
-        employee_list = []
-        recieved_json = json.loads(request.body)
-        recieved_dict = byteify(recieved_json)
         for role_emp_object in recieved_dict["employees"]:
             print(role_emp_object)
             '''
