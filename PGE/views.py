@@ -105,7 +105,7 @@ def add_tasks(request):
         for task_obj in recieved_dict['tasks']:
             tasks.append(task_obj)
         for role_emp_object in recieved_dict["employees"]:
-            role_name = 'AD'
+            role_name = role_emp_object['role_name']
             employee_email = role_emp_object['employee']['email']
             role_obj = Role.objects.get(role_name=role_name)
             employee = Employee.objects.get(email=employee_email)
