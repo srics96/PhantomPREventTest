@@ -89,7 +89,7 @@ def build_service():
 def create_event(deadline, summary, description):
     service = build_service()
     
-    start_datetime = datetime.datetime.now(tz=tz)
+    start_datetime = datetime.now(tz=tz)
     event = service.events().insert(calendarId='sricharanprograms@gmail.com', body={
         'summary': summary,
         'description': description,
