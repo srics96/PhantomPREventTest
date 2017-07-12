@@ -108,7 +108,7 @@ def add_tasks(request):
             role_name = 'AD'
             employee_email = role_emp_object['employee']['email']
             role_obj = Role.objects.get(role_name=role_name)
-            employee = Employee.objects.get(email=email)
+            employee = Employee.objects.get(email=employee_email)
             selection_obj, created = Selection.objects.get_or_create(role=role_obj)
             selection_obj.employees.add(employee)
             selection_dict[role_name] = selection_obj
