@@ -229,13 +229,14 @@ def handle_message(request):
                 unit = duration_deadline["unit"]
                 if unit == "day":
                     deadline = datetime.now(tz=tz).date() + timedelta(days=int(amount))
+                    summary = task_name
+                    description = "Task Deadline"
+                    create_event(datetime_obj, summary, description)
             else:
                 deadline = parser.parse(date_duration)
-            summary = task_name
-            description = "Task Deadline"
+            
             default_time = datetime.now(tz=tz).time()
             datetime_obj = datetime.combine(deadline, default_time)
-            create_event(datetime_obj, summary, description)
             task_obj.deadline = deadline
             task_obj.save()
 
