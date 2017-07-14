@@ -140,11 +140,11 @@ def add_tasks(request):
 
         employee_obj = Employee.objects.get(email=manager_email)
         manager_obj, created = Manager.objects.get_or_create(employee_instance=employee_obj)
-        project_obj = Project(project_name=channel_name, manager=manager_obj)
-        project_obj.save()
+        print(Manager.objects.all())
+        manager_obj.projecct_set.create(project_name=channel_name)
         print(Project.objects.all())
         for task_obj in recieved_dict['tasks']:
-            task_name = task_names[0]
+            task_name = task_obj['task_name']
             break
         project_obj.task_set.create(task_name=task_name)
         for role_emp_object in recieved_dict["employees"]:
