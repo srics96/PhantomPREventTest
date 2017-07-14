@@ -140,6 +140,7 @@ def add_tasks(request):
 
         employee_obj = Employee.objects.get(email=manager_email)
         manager_obj, created = Manager.objects.get_or_create(employee_instance=employee_obj)
+        print(created)
         print(Manager.objects.all())
         manager_obj.project_set.create(project_name=channel_name)
         print(manager_obj.project_set.all())
