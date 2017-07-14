@@ -204,6 +204,7 @@ def handle_message(request):
         response = requests.post(MESSAGE_SUBMISSION_URL, data=request_dict, headers=headers)
         response_dict = byteify(response.json())
         results_dict = response_dict[RESULT_KEY]
+        print(results_dict)
         action_incomplete = results_dict[ACTION_INCOMPLETE]
         if action_incomplete is False:
             result_parameters = results_dict["parameters"]
@@ -232,6 +233,7 @@ def handle_message(request):
             create_event(datetime_obj, summary, description)
             task_obj.deadline = deadline
             task_obj.save()
+
         fulfillment = results_dict['fulfillment']   
         speech_response = fulfillment['speech']
         response = {
