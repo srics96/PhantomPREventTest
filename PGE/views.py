@@ -141,7 +141,7 @@ def add_tasks(request):
         employee_obj = Employee.objects.get(email=manager_email)
         manager_obj, created = Manager.objects.get_or_create(employee_instance=employee_obj)
         print(Manager.objects.all())
-        manager_obj.projecct_set.create(project_name=channel_name)
+        manager_obj.project_set.create(project_name=channel_name)
         print(Project.objects.all())
         for task_obj in recieved_dict['tasks']:
             task_name = task_obj['task_name']
