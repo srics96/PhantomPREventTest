@@ -142,8 +142,11 @@ def add_tasks(request):
         manager_obj, created = Manager.objects.get_or_create(employee_instance=employee_obj)
         project_obj = Project(project_name=channel_name, manager=manager_obj)
         project_obj.save()
+        print(Project.objects.all())
         for task_obj in recieved_dict['tasks']:
-            task_names.append(task_obj['task_name'])
+            task_name = task_names[0]
+            break
+        project_obj.task_set.create(task_name=task_name)
         for role_emp_object in recieved_dict["employees"]:
             role_name = role_emp_object['role_name']
             employee_email = role_emp_object['employee']['email']
@@ -160,10 +163,6 @@ def add_tasks(request):
         request_list = []
         entity_entries = [] 
         entity_name = TASK_ENTITY_NAME
-        for task_name in task_names:
-            task_obj = Task(task_name=task_name, project=project_obj)
-            task_obj.save()
-
         return HttpResponse(status=201)
         '''
         for task in tasks:
