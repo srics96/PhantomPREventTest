@@ -143,7 +143,7 @@ def add_tasks(request):
         project_obj = Project(project_name=channel_name, manager=manager_obj)
         project_obj.save()
         for task_obj in recieved_dict['tasks']:
-            task_names.append(task_obj)
+            task_names.append(task_obj['task_name'])
         for role_emp_object in recieved_dict["employees"]:
             role_name = role_emp_object['role_name']
             employee_email = role_emp_object['employee']['email']
