@@ -143,11 +143,10 @@ def add_tasks(request):
         print(Manager.objects.all())
         manager_obj.project_set.create(project_name=channel_name)
         print(manager_obj.project_set.all())
-        for task_obj in recieved_dict['tasks']:
-            task_name = task_obj['task_name']
-            break
         project_obj = Project.objects.get(project_name=channel_name)
-        project_obj.task_set.create(task_name=task_name)
+        for task_obj in recieved_dict['tasks']:
+            project_obj.task_set.create(task_name=task_name)
+            
         print(project_obj.task_set.all())
         for role_emp_object in recieved_dict["employees"]:
             role_name = role_emp_object['role_name']
