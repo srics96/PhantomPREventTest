@@ -219,7 +219,8 @@ def handle_message(request):
             task_obj = Task.objects.get(task_name=task_name)
             for employee_name in employees:
                 employee_obj = Employee.objects.get(name=employee_name)
-                task_obj.employees.add(employee_obj)
+                selection_obj = Selection.objects.get(employees__name=employee_name)
+                task_obj.employees.add(selection_obj)
             deadline_dict = result_parameters["deadline"]
             date_duration = deadline_dict.get(DATE_DEADLINE_KEY, None)
             duration_deadline = deadline_dict.get(DURATION_DEADLINE_KEY, None)
