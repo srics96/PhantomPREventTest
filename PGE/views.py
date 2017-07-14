@@ -246,8 +246,6 @@ def handle_message(request):
         
         return HttpResponse(json.dumps(response), content_type="application/json")
     
-    elif request.method == 'GET': 
-        return HttpResponse(status=403)
 
 
 @csrf_exempt
