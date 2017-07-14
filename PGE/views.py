@@ -131,7 +131,7 @@ def call_api(session_id, query):
 def add_tasks(request):
     if request.method == 'POST':
         selection_dict = {}
-        tasks = []
+        task_names = []
         recieved_json = json.loads(request.body)
         recieved_dict = byteify(recieved_json)
         channel_name = recieved_dict['channel_name']
@@ -143,7 +143,7 @@ def add_tasks(request):
         project_obj = Project(project_name=channel_name, manager=manager_obj)
         project_obj.save()
         for task_obj in recieved_dict['tasks']:
-            tasks.append(task_obj)
+            task_names.append(task_obj)
         for role_emp_object in recieved_dict["employees"]:
             role_name = role_emp_object['role_name']
             employee_email = role_emp_object['employee']['email']
@@ -160,8 +160,12 @@ def add_tasks(request):
         request_list = []
         entity_entries = [] 
         entity_name = TASK_ENTITY_NAME
-        
-        
+        for task_name in task_names:
+            task_obj = Task(task_name=task_name, project=project_obj)
+            task_obj.save()
+
+        return HttpResponse(status=201)
+        '''
         for task in tasks:
             task_name = task['task_name']
             task_obj, created = Task.objects.get_or_create(task_name=task_name, project=project_obj)
@@ -181,7 +185,7 @@ def add_tasks(request):
         
     else:
         return HttpResponse(status=403)
-
+        '''
 
 @csrf_exempt
 def handle_message(request):
@@ -270,6 +274,11 @@ def add_employee(request):
                 employee_obj.save()
                 employee_obj.priority.add(priority_obj)
         return HttpResponse(status=200)
+
+
+@csrf_exempt
+def list_tasks(request):
+    return HttpResponse(Task.objects.all())
 
 
 

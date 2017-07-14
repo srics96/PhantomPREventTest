@@ -56,22 +56,24 @@ class Project(models.Model):
     end_date = models.DateField(default=None, null=True)
     manager = models.ForeignKey(Manager)
     employees = models.ManyToManyField(Employee)
-    selections = models.ManyToManyField(Selection)
+    selections = models.ManyToManyField(Selection)  
     
     def __str__(self):
         return self.project_name
 
 
-class Task(models.Model):   
+class Task(models.Model):
     task_name = models.CharField(max_length=100, default=None)
     start_date = models.DateField(default=datetime.now().date())
-    deadline = models.DateField(default=datetime.now().date() + timedelta(days=30))
-    employees = models.ManyToManyField(Employee)
-    dimensions = models.ManyToManyField(Role)
+    deadline = models.DateField(default=None, null=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    employees = models.ManyToManyField(Selection)
 
     def __str__(self):
         return self.task_name
+
+
+
 
 
 
