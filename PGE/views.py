@@ -192,7 +192,7 @@ def add_tasks(request):
 @csrf_exempt
 def handle_message(request):
     if request.method == 'GET':
-        print("Reached server")
+        return HttpResponse("Reached server")
     if request.method == 'POST':
         print(Task.objects.all())
         recieved_json = json.loads(request.body)
