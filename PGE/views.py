@@ -142,7 +142,7 @@ def add_tasks(request):
         manager_obj, created = Manager.objects.get_or_create(employee_instance=employee_obj)
         print(Manager.objects.all())
         manager_obj.project_set.create(project_name=channel_name)
-        print(Project.objects.all())
+        print(manager_obj.project_set.all())
         for task_obj in recieved_dict['tasks']:
             task_name = task_obj['task_name']
             break
