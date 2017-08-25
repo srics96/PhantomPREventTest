@@ -1,3 +1,4 @@
+'''
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -167,7 +168,8 @@ def add_tasks(request):
         entity_entries = [] 
         entity_name = TASK_ENTITY_NAME
         return HttpResponse(status=201)
-        '''
+        
+        
         for task in tasks:
             task_name = task['task_name']
             task_obj, created = Task.objects.get_or_create(task_name=task_name, project=project_obj)
@@ -187,7 +189,7 @@ def add_tasks(request):
         
     else:
         return HttpResponse(status=403)
-        '''
+        
 
 @csrf_exempt
 def handle_message(request):
@@ -198,6 +200,7 @@ def handle_message(request):
         recieved_json = json.loads(request.body)
         input_dict = byteify(recieved_json)
         message = input_dict[MESSAGE_REQUEST_KEY]
+        channel_name = input_dict['channel_name']
         message = message.lstrip()
         message = message[8:]
         message = message.replace("@", "")
@@ -228,15 +231,16 @@ def handle_message(request):
                 amount = duration_deadline["amount"]
                 unit = duration_deadline["unit"]
                 if unit == "day":
-                    deadline = datetime.now(tz=tz).date() + timedelta(days=int(amount))
-                    summary = task_name
-                    description = "Task Deadline"
-                    create_event(datetime_obj, summary, description)
+                    deadline = datetime.now(tz=tz) + timedelta(days=int(amount))
             else:
                 deadline = parser.parse(date_duration)
             
+            summary = task_name
+            description = "Deadline added from the project channel - {0}".format(channel_name)
             default_time = datetime.now(tz=tz).time()
             datetime_obj = datetime.combine(deadline, default_time)
+            deadline = tz.localize(datetime_obj)
+            create_event(deadline, summary, description)
             task_obj.deadline = deadline
             task_obj.save()
 
@@ -272,7 +276,7 @@ def add_employee(request):
         for priorities in role_keys:
             roles.append(recieved_dict.get(priorities, None))
         print(roles)
-        for (index, role) in enumerate(roles):
+        for (index, role) in enumerate(roleoles):
             if role is not None:
                 role_obj = Role.objects.get(role_name=role)
                 priority_obj = Priority.objects.get(role=role_obj, magnitude=index + 1)
@@ -286,18 +290,16 @@ def add_employee(request):
 def list_tasks(request):
     return HttpResponse(Task.objects.all())
 
-
+'''
 
 
                 
 
 
 
-    '''
-    employee = Employee.objects.get(email="skandyruban@gmail.com")
-    input_dict = {"name": "Rithwin Siva", "email": "rithwinsiva@gmail.com"}
-    db.child("employees").push(input_dict, user['idToken'])
-    '''
+    
+    
+    
 
     
         

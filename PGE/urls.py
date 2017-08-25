@@ -1,3 +1,4 @@
+'''
 from django.conf.urls import include
 from django.conf.urls import url
 
@@ -10,3 +11,4 @@ urlpatterns = [
 	url(r'^listTasks', list_tasks, name="list_tasks"),
 	url(r'^getEmployees/(?P<role>[A-Z]+)', get_employees, name="get_employees"),
 ] 
+'''
